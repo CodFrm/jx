@@ -1,0 +1,155 @@
+body {
+    margin: 0 auto;
+    width: 60%;
+}
+
+#header {
+    border-bottom: 1px solid #808080;
+    margin-top: 10px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.logo {
+    height: 60px;
+    border-radius: 100%;
+}
+
+.title {
+    display: inline;
+}
+
+.title > span {
+    position: absolute;
+    line-height: 60px;
+    font-size: 28px;
+    margin-left: 10px;
+}
+
+.login {
+    padding: 4px;
+    float: right;
+}
+
+#content {
+    margin-top: 10px;
+}
+
+.soft-list > .item {
+    border-right: 1px solid #cacaca;
+    border-bottom: 1px solid #cacaca;
+    border-left: 1px solid #cacaca;
+    padding: 4px;
+    line-height: 32px;
+    overflow: hidden;
+}
+/**
+ first-child 第一个
+ */
+.soft-list > .item:first-child{
+    border-top: 1px solid #cacaca;
+}
+
+.soft-list > .item > .item-left {
+    width: 70%;
+}
+
+.soft-list > .item > .item-right {
+    width: 30%;
+    margin: 0;
+    text-align: center;
+}
+
+.download{
+    display: block;
+    margin: 0 auto;
+    border: 0;
+    background: #72acf5;
+    color: #fff;
+    height: 30px;
+    border-radius: 4px;
+    box-shadow: 1px 2px 1px #adadad;
+    cursor: pointer;
+}
+
+.soft-list > .item > .item-left,
+.soft-list > .item > .item-right {
+    float: left;
+}
+
+.soft-list > .item > .item-left > img {
+    width: 32px;
+    height: 32px;
+}
+
+.soft-title {
+    position: absolute;
+    margin-left: 4px;
+    color: #000000;
+}
+
+/**
+说明
+ */
+.soft-exp {
+    color: #575757;
+    font-size: 14px;
+    margin: 0;
+}
+
+
+.page > .page-item {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    padding: 2px;
+    cursor: pointer;
+    text-align: center;
+    float: left;
+    border: 1px solid #cccccc;
+    border-right: 0;
+    user-select: none;
+}
+
+.page > .page-item:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.page > .page-item:last-child {
+    border-right: 1px solid #cccccc;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.page > .page-item.active {
+    background: #8ac7f7;
+    color: #fff;
+}
+
+.btn {
+    float: right;
+    cursor: pointer;
+    height: 55px;
+}
+
+.user-msg {
+    float: right;
+}
+
+.user-msg > .left {
+    float: left;
+    margin-right: 10px;
+}
+
+.user-msg > .left > .user-name {
+    display: block;
+    line-height: 40px;
+}
+
+.user-msg > .left > a {
+    color: #2196F3;
+}

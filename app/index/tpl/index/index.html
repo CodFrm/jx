@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>信院计算机协会下载站</title>
+    <link rel="stylesheet" href="__HOME__/static/css/index.css">
+    <script src="__HOME__/static/js/downlist.js"></script>
+</head>
+
+<body>
+<div id="header">
+    <div class="title">
+        <img class="logo" src="__HOME__/static/image/logo.jpg" alt="" srcset="">
+        <span>信院计算机协会下载站</span>
+    </div>
+    {if isLogin()}
+    <!--登录成功之后隐藏了-->
+    <div class="user-msg">
+        <img class="logo" src="__HOME__/static/image/avatar.png" alt="">
+        <div class="left">
+            <span class="user-name">{$user['name']}</span>
+            <a href="#">退出</a>
+        </div>
+    </div>
+    {else}
+    <button class="btn" id="login">登陆</button>
+    <div class="login">
+        <div class="form-group">
+            <label>账号:</label>
+            <input type="text" id="user">
+        </div>
+        <div class="form-group">
+            <label>密码:</label>
+            <input type="password" id="pwd">
+        </div>
+    </div>
+    {/if}
+</div>
+<div id="content">
+    <div id="soft-list">
+
+    </div>
+
+</div>
+</body>
+<script>
+    var home='__HOME__';
+    /**
+     * js交互调用php的接口,去登录账号
+     */
+    window.onload = function () {
+        {if !isLogin()}
+        document.getElementById('login').onclick = function () {
+            var xmlhttp;
+            if (window.XMLHttpRequest) {
+                // IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {
+                // IE6, IE5 浏览器执行代码
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {//当服务器返回
+                    var row = JSON.parse(xmlhttp.response);
+                    console.log(row);
+                    alert(row.msg);
+                    if (row.code == 0) {
+                        location.reload();
+                    }
+                }
+            }
+            var user = document.getElementById('user').value, pwd = document.getElementById('pwd').value;
+            xmlhttp.open("GET", "{:url('index/index/login')}?user=" + user + '&pwd=' + pwd, true);
+            xmlhttp.send();
+
+        };
+        {/if}
+        var dlist = new dList(document.getElementById('soft-list'));
+        dlist.load();
+    }
+</script>
+</html>
