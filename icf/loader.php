@@ -13,7 +13,7 @@ spl_autoload_register('loader::loadClass');
 
 class loader {
     //路径映射
-    static $path = ['lib' => 'icf\\lib'];
+    static $path = ['lib' => 'icf/lib'];
 
     /**
      * 加载类

@@ -87,7 +87,8 @@ class route {
             self::$action = _get(_config('action_key'), $mca[2]);
         }
         self::$classNamePace = 'app\\' . self::$model . '\\ctrl\\' . self::$ctrl;
-        if (!is_file(self::$classNamePace . '.php')) {
+        $className = str_replace('\\', '/',  self::$classNamePace);
+        if (!is_file($className. '.php')) {
             return false;
         }
         $tmpParam = '';
@@ -141,7 +142,8 @@ class route {
             self::$ctrl = _get(_config('ctrl_key'), 'index');
             self::$action = _get(_config('action_key'), 'index');
             self::$classNamePace = 'app\\' . self::$model . '\\ctrl\\' . self::$ctrl;
-            if (!is_file(self::$classNamePace . '.php')) {
+            $className = str_replace('\\', '/',  self::$classNamePace);
+            if (!is_file($className. '.php')) {
                 _404();
                 return false;
             }

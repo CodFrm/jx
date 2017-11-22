@@ -1,7 +1,6 @@
 /**
  js,动态加载软件列表
  */
-
 var dList = function (obj) {
     obj.className += 'soft-list';//加一个class样式
     obj.page = 1;//记录现在的页码
