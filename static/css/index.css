@@ -64,6 +64,8 @@ a {
 
 .download{
     display: block;
+    width: 70px;
+    padding: 0 10px 0 10px;
     margin: 0 auto;
     border: 0;
     background: #72acf5;

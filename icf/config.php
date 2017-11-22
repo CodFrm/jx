@@ -17,15 +17,22 @@ return [
         'db' => 'jx',
         'user' => 'root',
         'pwd' => '',
-        'prefix'=>'jx_'
+        'prefix' => 'jx_'
     ],
     //模块,控制器,操作 默认关键字
     'model_key' => 'm',
     'ctrl_key' => 'c',
     'action_key' => 'a',
-    'route' => ['*' => ['debug/{test}' => 'index->debug']],
+    'route' => [
+        '*' => [
+            'debug/{test}' => 'index->debug'
+        ],
+        'get' => [
+            'd/{sid}' => 'index->api->download'
+        ]
+    ],
     'tpl_suffix' => 'html',
     'public' => 'public',
-    'log'=>true,
-    'pwd_deal'=>'df@#5!51Dw'
+    'log' => true,
+    'pwd_deal' => 'df@#5!51Dw'
 ];

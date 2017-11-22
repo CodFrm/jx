@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2017-11-21 21:42:48
+Date: 2017-11-22 17:02:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -45,8 +45,8 @@ INSERT INTO `jx_soft_list` VALUES ('9', '软件名1423', '说明', '', '', '1', 
 INSERT INTO `jx_soft_list` VALUES ('10', '软件名1423', '说明', '', '', '1', '101011');
 INSERT INTO `jx_soft_list` VALUES ('11', '软件名1423', '说明', '', '', '1', '101011');
 INSERT INTO `jx_soft_list` VALUES ('12', '软件名1423', '说明', '', '', '1', '101011');
-INSERT INTO `jx_soft_list` VALUES ('13', '软件名1423', '说明', '', '', '1', '101011');
-INSERT INTO `jx_soft_list` VALUES ('14', '软件414名1423', '说明', '', '', '1', '101011');
+INSERT INTO `jx_soft_list` VALUES ('13', 'tim', '2333', '', 'tim.exe', '1', '101011');
+INSERT INTO `jx_soft_list` VALUES ('14', '电影', '看看电影', '', 'movie/jrkl.mp4', '1', '101011');
 INSERT INTO `jx_soft_list` VALUES ('15', 'putty3', '说明', 'putty.png', 'putty.exe', '1', '101011');
 
 -- ----------------------------
@@ -66,7 +66,10 @@ INSERT INTO `jx_token` VALUES ('1', 'cawIHl', '1511262853');
 INSERT INTO `jx_token` VALUES ('1', 'IbbckGeu1511267247', '1511267247');
 INSERT INTO `jx_token` VALUES ('1', 'vGlAWw0F1511267260', '1511269810');
 INSERT INTO `jx_token` VALUES ('1', 'Uson32iG1511269828', '1511269828');
-INSERT INTO `jx_token` VALUES ('1', 'x0wR0ceA1511269851', '1511270920');
+INSERT INTO `jx_token` VALUES ('1', 'x0wR0ceA1511269851', '1511338853');
+INSERT INTO `jx_token` VALUES ('1', 'lorHdO0z1511338857', '1511339733');
+INSERT INTO `jx_token` VALUES ('1', 'i6Okakpk1511339845', '1511339845');
+INSERT INTO `jx_token` VALUES ('1', 'aGtGR9Ko1511339895', '1511341019');
 
 -- ----------------------------
 -- Table structure for jx_user

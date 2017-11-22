@@ -119,7 +119,7 @@ class route {
             $tmpRule = self::$rule[strtolower($_SERVER['REQUEST_METHOD'])];
             foreach ($tmpRule as $key => $value) {
                 //匹配规则
-                if (self::matchRule($value, $pathInfo)) {
+                if (self::matchRule([$key, $value], $pathInfo)) {
                     if (self::runAction()) {
                         return;
                     }

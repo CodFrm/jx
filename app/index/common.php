@@ -12,7 +12,7 @@ use icf\lib\db;
 
 function isLogin() {
     if ($uid = _cookie('uid') && $token = _cookie('token')) {
-        return verifyToken(_cookie('uid'),_cookie('token'));
+        return verifyToken(_cookie('uid'), _cookie('token'));
     }
     return false;
 }
@@ -66,4 +66,18 @@ function verifyToken($uid, $token) {
     }
     db::table('token')->where($where)->update(['time' => time()]);
     return true;
+}
+
+/**
+ * 通过路径获取文件名
+ * @author Farmer
+ * @param $path
+ * @return bool|string
+ */
+function getFileName($path) {
+    if(($pos=strrpos($path, '/'))!==false){
+        $pos++;
+    }
+    $s = substr($path, $pos);
+    return $s;
 }

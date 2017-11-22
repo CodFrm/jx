@@ -46,7 +46,7 @@ class query {
      * @return $this
      */
     public function where($field, $value = '', $operator = '=') {
-        $this->where .= ' ' . (empty($this->where) ? '' : $this->lastOper.' ');
+        $this->where .= ' ' . (empty($this->where) ? '' : $this->lastOper . ' ');
         //恢复默认运算符
         $this->lastOper = 'and';
         if (is_array($field)) {
@@ -131,9 +131,10 @@ class query {
         return false;
     }
 
-    public function count(){
+    public function count() {
         return $this->field('count(*)')->find()['count(*)'];
     }
+
     /**
      * 数据更新
      * @author Farmer
@@ -240,7 +241,7 @@ class query {
      * @return mixed
      */
     public function find() {
-        return  $this->limit('1')->select()->fetch();
+        return $this->limit('1')->select()->fetch();
     }
 
     /**
@@ -267,16 +268,21 @@ class query {
         $this->exec('rollback');
     }
 
-    public function field($field,$alias='') {
-        if (is_string($field)){
-            if (empty($alias)){
-                $this->field .=(empty($this->field)?'':',').$field.' ';
-            }else{
-                $this->field .=(empty($this->field)?'':',').$field.' as '.$alias.' ';
+    public function field($field, $alias = '') {
+        if (is_string($field)) {
+            if (empty($alias)) {
+                $this->field .= (empty($this->field) ? '' : ',') . $field . ' ';
+            } else {
+                $this->field .= (empty($this->field) ? '' : ',') . $field . ' as ' . $alias . ' ';
             }
-        }else if(is_array($field)){
-            foreach ($field as $key=>$value){
-                $this->field .=(empty($this->field)?'':',').$key.' as '.$value.' ';
+        } else if (is_array($field)) {
+            foreach ($field as $key => $value) {
+                if (is_array($value)) {
+                    $this->field .= (empty($this->field) ? '' : ',') . $key . ' as ' . $value . ' ';
+                } else if (is_string($value)) {
+                    $this->field .= (empty($this->field) ? '' : ',') . $value . ' ';
+                }
+
             }
         }
         return $this;

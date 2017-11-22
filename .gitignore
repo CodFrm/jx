@@ -1,6 +1,6 @@
 .idea
 /app/cache/tpl/*.php
 *.log
-/static/soft
-/static/image/softlogo
+/static/res
+/static/image/res
 

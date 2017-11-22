@@ -46,4 +46,9 @@ class index {
             return json($json);
     }
 
+    public function sign_out(){
+        setcookie('uid','',0,'/');
+        setcookie('token','',0,'/');
+        header('location: '.url(''));
+    }
 }
