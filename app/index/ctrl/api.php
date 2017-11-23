@@ -50,7 +50,6 @@ class api {
      */
     public function download($sid = 0) {
         if ($soft = db::table('soft_list')->where('sid', $sid)->find()) {
-            //
             $filename = __ROOT_ . '/static/res/' . $soft['soft_path'];
             if (!(@$hfile = fopen($filename, 'r'))) {
                 return _404();

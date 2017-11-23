@@ -19,7 +19,7 @@ var dList = function (obj) {
                     html = '<div class="item">\n' +
                         '            <div class="item-left">\n' +
                         '                <img src="' + home + '/static/image/softlogo/' + json.rows[key].soft_logo + '" alt="">\n' +
-                        '                <a href="" class="soft-title">\n' +
+                        '                <a class="soft-title">\n' +
                         json.rows[key].soft_name +
                         '                </a>\n' +
                         '                <p class="soft-exp">\n' +
