@@ -9,6 +9,7 @@
  */
 
 use icf\lib\db;
+
 /**
  * 通过uid获取用户信息
  * @author Farmer
@@ -64,6 +65,25 @@ function isAuth($group_id) {
  * @param $path
  * @return mixed
  */
-function getPathSoft($path){
-    return db::table('soft_list as a')->join(['user'=>'b'],'a.soft_uid=b.uid')->where('soft_path',$path)->find();
+function getPathSoft($path) {
+    return db::table('soft_list as a')->where('soft_type', 0)->join(['user' => 'b'], 'a.soft_uid=b.uid')->where('soft_path', $path)->find();
+}
+
+/**
+ * 时间转路径并创建目录
+ * @author Farmer
+ * @param $path
+ * @return bool|string
+ */
+function time2path($path = '/', &$timePath = '') {
+    $year = date('Y');
+    $month = date('m');
+    if (!file_exists($path . $year)) {
+        if (!mkdir($path . $year, 0777, true)) return false;
+    }
+    if (!file_exists($path . $year . '/' . $month)) {
+        if (!mkdir($path . $year . '/' . $month, 0777, true)) return false;
+    }
+    $timePath = $year . '/' . $month . '/';
+    return $path . $year . '/' . $month . '/';
 }

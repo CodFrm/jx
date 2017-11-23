@@ -42,11 +42,11 @@ class query {
      * 条件
      * @author Farmer
      * @param $field
-     * @param string $value
+     * @param null $value
      * @param string $operator
      * @return $this
      */
-    public function where($field, $value = '', $operator = '=') {
+    public function where($field, $value = null, $operator = '=') {
         $this->where .= ' ' . (empty($this->where) ? '' : $this->lastOper . ' ');
         //恢复默认运算符
         $this->lastOper = 'and';
@@ -68,7 +68,7 @@ class query {
                 }
             }
         } else if (is_string($field)) {
-            if (empty($value)) {
+            if (is_null($value)) {
                 $this->where .= $field;
             } else {
                 $this->where .= " `$field`$operator?";

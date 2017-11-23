@@ -22,21 +22,21 @@
         {if isset($item['sid'])}
         <td>{$item['soft_name']}</td>
         <td>{$item['soft_exp']}</td>
-        <td type="img"><img src="__HOME__/static/image/res/{$item['soft_logo']}"></td>
+        <td type="img"><img src="__HOME__/static/res/images/{$item['soft_logo']}" file="{$item['soft_logo']}"></td>
         <td type="fix"><a href="__HOME__/d/{$item['sid']}?file={$item['soft_path']}">{$item['soft_path']}</a></td>
         <td type="fix">{$item['user']}</td>
         <td type="fix">{$item['soft_time']}</td>
+        <input type="hidden" class="sid" value="{$item['sid']}">
         {else}
         <td>{$item['name']}</td>
         <td></td>
         <td type="img"></td>
-        <td type="fix"><a href="__HOME__/static/res/tmp/{$item['name']}">{$item['name']}</a></td>
+        <td type="fix"><a href="__HOME__/static/res/tmp/{$item['name']}">tmp/{$item['name']}</a></td>
         <td type="fix"></td>
         <td type="fix"></td>
         {/if}
-        <td>
-            <button>通过</button>
-            <button>删除</button>
+        <td type="fix">
+            <button onclick="accept(this)">通过</button>
         </td>
     </tr>
     {/foreach}
@@ -46,19 +46,41 @@
        style="display: none">
 </body>
 <script>
+    function accept(btn) {
+        var tr = $(btn).parent().parent();
+        var soft_name = $(tr).find('td').eq(0).html();
+        var soft_exp = $(tr).find('td').eq(1).html();
+        var soft_logo = $(tr).find('td').eq(2).find('img').attr('file');
+        var soft_path = $(tr).find('td').eq(3).find('a').html();
+        var sid = $(tr).find('.sid').val();
+        $.ajax({
+            url: "{:url('admin/index/operAudit'),'?action=accept'}",
+            data: {sid: sid, soft_name: soft_name, soft_exp: soft_exp, soft_path: soft_path, soft_logo: soft_logo},
+            success: function (data) {
+                alert(data.msg);
+                if (data.code == 0) {
+                    $(tr).remove();
+                }
+            }, error: function () {
+                alert('提交失败！');
+            }
+        });
+    }
+
     var f = null;
     $(document).ready(function () {
         var edit = false;
         $('tr>td').on('click', function () {
+            f = this;
+            if (edit) return;
+            edit = true;
             var type = $(this).attr('type');
             if (type == 'fix') {
+                edit = false;
                 return;
             } else if (type == undefined) {
-                if (edit) return;
-                edit = true;
                 $(this).html('<input id="edit" type="text" value="' + $(this).html() + '">');
                 $('#edit').focus();
-                f = this;
                 $(this).on('blur', '#edit', function () {
                     edit = false;
                     $(f).html($(this).val());
@@ -68,9 +90,11 @@
                     if (key.originalEvent.keyCode == 13) {
                         $(this).blur();
                     }
-                    console.log(key.originalEvent);
                     return true;
                 });
+            } else if (type == 'img') {
+                $('#image-file').click();
+                edit = false;
             }
         });
     });
@@ -89,7 +113,7 @@
             success: function (data) {
                 alert(data.msg);
                 if (data.code == 0) {
-                    $(f).html('<img src="__HOME__/assets/upload/images/' + data.url + '" md5="' + data.url + '" width="80px" height="80px" id="qr-image"/>');
+                    $(f).html('<img src="__HOME__/static/res/images/' + data.url + '" file="' + data.url + '"/>');
                 }
             }, error: function () {
                 alert('上传失败！');

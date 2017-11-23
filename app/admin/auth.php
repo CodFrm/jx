@@ -11,7 +11,9 @@
 namespace app\admin;
 
 use icf\lib\db;
+
 require_once "common.php";
+
 class auth {
     protected $userMsg;
 
@@ -35,4 +37,10 @@ class auth {
             exit();
         }
     }
+
+    public static function _error($msg, $url) {
+        header('Location:' . url('index/index/error', 'error=' . $msg . '&url=' . $url));
+    }
+
+
 }

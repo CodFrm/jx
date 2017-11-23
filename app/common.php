@@ -121,3 +121,65 @@ function verifyToken($uid, $token) {
     db::table('token')->where($where)->update(['time' => time()]);
     return true;
 }
+
+/**
+ * 判断文件是不是图片
+ *
+ * @author Farmer
+ * @param string $fileName
+ * @return bool
+ *
+ */
+function isImg($fileName) {
+    $file = fopen($fileName, "rb");
+    $bin = fread($file, 2); // 只读2字节
+
+    fclose($file);
+    $strInfo = @unpack("C2chars", $bin);
+    $typeCode = intval($strInfo ['chars1'] . $strInfo ['chars2']);
+    $fileType = '';
+    if ($typeCode == 255216 /*jpg*/ || $typeCode == 7173 /*gif*/ || $typeCode == 13780 /*png*/) {
+        return $typeCode;
+    } else {
+        return false;
+    }
+}
+
+
+/**
+ * 分割文件
+ * @author Farmer
+ * @param $filename
+ * @return array
+ */
+function filePart($filename) {
+    $arr = explode('.', $filename, strrpos($filename, '.') - 1);
+    if (sizeof($arr) < 2) {
+        $arr[] = 'png';
+    }
+    return $arr;
+}
+
+
+/**
+ * 通过路径获取文件名
+ * @author Farmer
+ * @param $path
+ * @return bool|string
+ */
+function getFileName($path) {
+    if (($pos = strrpos($path, '/')) !== false) {
+        $pos++;
+    }
+    $s = substr($path, $pos);
+    return $s;
+}
+/**
+ * sid获取软件信息
+ * @author Farmer
+ * @param $sid
+ * @return mixed
+ */
+function sidSoft($sid){
+    return db::table('soft_list')->where('sid',$sid)->find();
+}

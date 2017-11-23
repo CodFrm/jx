@@ -87,8 +87,8 @@ class route {
             self::$action = _get(_config('action_key'), $mca[2]);
         }
         self::$classNamePace = 'app\\' . self::$model . '\\ctrl\\' . self::$ctrl;
-        $className = str_replace('\\', '/',  self::$classNamePace);
-        if (!is_file($className. '.php')) {
+        $className = str_replace('\\', '/', self::$classNamePace);
+        if (!is_file($className . '.php')) {
             return false;
         }
         $tmpParam = '';
@@ -117,12 +117,14 @@ class route {
     static function analyze() {
         if (isset($_SERVER['PATH_INFO'])) {
             $pathInfo = $_SERVER['PATH_INFO'];
-            $tmpRule = self::$rule[strtolower($_SERVER['REQUEST_METHOD'])];
-            foreach ($tmpRule as $key => $value) {
-                //匹配规则
-                if (self::matchRule([$key, $value], $pathInfo)) {
-                    if (self::runAction()) {
-                        return;
+            if (isset(self::$rule[strtolower($_SERVER['REQUEST_METHOD'])])) {
+                $tmpRule = self::$rule[strtolower($_SERVER['REQUEST_METHOD'])];
+                foreach ($tmpRule as $key => $value) {
+                    //匹配规则
+                    if (self::matchRule([$key, $value], $pathInfo)) {
+                        if (self::runAction()) {
+                            return;
+                        }
                     }
                 }
             }
@@ -142,8 +144,8 @@ class route {
             self::$ctrl = _get(_config('ctrl_key'), 'index');
             self::$action = _get(_config('action_key'), 'index');
             self::$classNamePace = 'app\\' . self::$model . '\\ctrl\\' . self::$ctrl;
-            $className = str_replace('\\', '/',  self::$classNamePace);
-            if (!is_file($className. '.php')) {
+            $className = str_replace('\\', '/', self::$classNamePace);
+            if (!is_file($className . '.php')) {
                 _404();
                 return false;
             }

@@ -18,7 +18,7 @@ var dList = function (obj) {
                     var html = '';
                     html = '<div class="item">\n' +
                         '            <div class="item-left">\n' +
-                        '                <img src="' + home + '/static/image/softlogo/' + json.rows[key].soft_logo + '" alt="">\n' +
+                        '                <img src="' + home + '/static/res/images/' + json.rows[key].soft_logo + '" alt="">\n' +
                         '                <a class="soft-title">\n' +
                         json.rows[key].soft_name +
                         '                </a>\n' +

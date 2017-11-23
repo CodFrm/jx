@@ -12,6 +12,7 @@ namespace app\index\ctrl;
 
 
 use app\admin\auth;
+use app\common\user;
 use icf\lib\db;
 
 class api extends auth {
@@ -23,16 +24,16 @@ class api extends auth {
         $retJson = ['code' => 0, 'msg' => 'success'];
         $page = (isset($_GET['page']) ? $_GET['page'] : 1);
         $rec = db::table('soft_list')
-            ->where('soft_type',1)
+            ->where('soft_type', 1)
             ->field(['sid', 'soft_name', 'soft_exp', 'soft_logo', 'soft_path', 'soft_time'])
             ->limit(($page - 1) * 10, 10)->order('sid')->select();
         while ($row = $rec->fetch()) {
             $row['soft_path'] = getFileName($row['soft_path']);
             $retJson['rows'][] = $row;
         }
-        $count = db::table('soft_list')->where('soft_type',1)->count();
+        $count = db::table('soft_list')->where('soft_type', 1)->count();
         $retJson['total'] = ceil($count / 10);
-        return json_encode($retJson);
+        return $retJson;
     }
 
     /**
@@ -45,6 +46,10 @@ class api extends auth {
             $filename = __ROOT_ . '/static/res/' . $soft['soft_path'];
             if (!(@$hfile = fopen($filename, 'r'))) {
                 return _404();
+            }
+            if (($msg = user::buy_soft($sid)) !== true) {
+                auth::_error($msg, url('/'));
+                return;
             }
             header('Content-Description: File Transfer');
             header('Content-type: application/octet-stream');
