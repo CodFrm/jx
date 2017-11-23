@@ -14,6 +14,8 @@ spl_autoload_register('loader::loadClass');
 class loader {
     //路径映射
     static $path = ['lib' => 'icf/lib'];
+    //已加载
+    static $loaded = [];
 
     /**
      * 加载类
@@ -21,6 +23,10 @@ class loader {
      * @return bool
      */
     static function loadClass($className) {
+        if (in_array($className, self::$loaded)) {
+            return true;
+        }
+        self::$loaded[] = $className;
         //处理斜杠,linux系统中得用/
         $className = str_replace('\\', '/', $className);
         //取出左边的路径
@@ -30,6 +36,6 @@ class loader {
         if (is_file($loadFile)) {
             require_once $loadFile;
         }
-        return false;
+        return true;
     }
 }

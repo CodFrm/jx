@@ -33,6 +33,7 @@ class query {
     private $field = '';
     private $order = '';
     private $limit = '';
+    private $join = '';
 
     private $lastOper = 'and';
     private $bindParam = [];
@@ -53,10 +54,17 @@ class query {
             //获取最后一个
             $keys = array_keys($field);
             foreach ($field as $key => $item) {
-                $this->where .= "`$key`$operator? ";
-                $this->bindParam[] = $item;
-                if ($key != end($keys)) {
-                    $this->where .= 'and ';
+                if (is_string($key)) {
+                    $this->where .= "`$key`$operator? ";
+                    $this->bindParam[] = $item;
+                    if ($key !== end($keys)) {
+                        $this->where .= 'and ';
+                    }
+                } else if (is_numeric($key)) {
+                    $this->where .= "$item";
+                    if ($key !== end($keys)) {
+                        $this->where .= 'and ';
+                    }
                 }
             }
         } else if (is_string($field)) {
@@ -70,6 +78,21 @@ class query {
         return $this;
     }
 
+    public function join($table, $on = '', $link = 'left') {
+        if (is_array($table)) {
+            foreach ($table as $key => $value) {
+                if (is_string($key)) {
+                    $this->join .= " $link join `" . input('config.db.prefix') . $key . "` as $value " . (empty($on) ? '' : "on $on");
+                } else if (is_numeric($key)) {
+                    $this->join .= ' ' . $value;
+                }
+            }
+        } else if (is_string($table)) {
+            $table = str_replace(':', input('config.db.prefix'), $table);
+            $this->join .= " $link join $table " . (empty($on) ? '' : "on $on");
+        }
+        return $this;
+    }
 
     /**
      * 插入数据
@@ -122,7 +145,7 @@ class query {
      * @return bool|record
      */
     public function select() {
-        $sql = 'select ' . ($this->field ?: '*') . " from {$this->table} " . ($this->where ? 'where' : '');
+        $sql = 'select ' . ($this->field ?: '*') . " from {$this->table} {$this->join} " . ($this->where ? 'where' : '');
         $sql .= $this->dealParam();
         $result = self::$db->prepare($sql);
         if ($result->execute($this->bindParam)) {

@@ -154,6 +154,9 @@ class route {
 
 
     static function runAction() {
+        input('model', route::$model);
+        input('ctrl', route::$ctrl);
+        input('action', route::$action);
         //加载全局函数
         $comPath = __ROOT_ . '/app/common.php';
         if (file_exists($comPath)) {
@@ -178,9 +181,6 @@ class route {
                 $param [] = $value->getDefaultValue();
             }
         }
-        input('model', route::$model);
-        input('ctrl', route::$ctrl);
-        input('action', route::$action);
         $data = call_user_func_array([
             $object,
             self::$action

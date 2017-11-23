@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件审核</title>
+    <script src="__HOME__/static/js/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+<table id="oper" border="1">
+    <tr>
+        <td width="100px">软件名</td>
+        <td width="100px">软件说明</td>
+        <td width="80px">图标</td>
+        <td width="100px">下载看看</td>
+        <td width="100px">上传用户</td>
+        <td width="200px">上传时间</td>
+        <td width="120px">操作</td>
+    </tr>
+
+    {foreach $list as $item}
+    <tr>
+        {if isset($item['sid'])}
+        <td>{$item['soft_name']}</td>
+        <td>{$item['soft_exp']}</td>
+        <td type="img"><img src="__HOME__/static/image/res/{$item['soft_logo']}"></td>
+        <td type="fix"><a href="__HOME__/d/{$item['sid']}?file={$item['soft_path']}">{$item['soft_path']}</a></td>
+        <td type="fix">{$item['user']}</td>
+        <td type="fix">{$item['soft_time']}</td>
+        {else}
+        <td>{$item['name']}</td>
+        <td></td>
+        <td type="img"></td>
+        <td type="fix"><a href="__HOME__/static/res/tmp/{$item['name']}">{$item['name']}</a></td>
+        <td type="fix"></td>
+        <td type="fix"></td>
+        {/if}
+        <td>
+            <button>通过</button>
+            <button>删除</button>
+        </td>
+    </tr>
+    {/foreach}
+
+</table>
+<input type="file" accept="image/jpeg, image/gif, image/png" onchange="upload();" name="file" id="image-file"
+       style="display: none">
+</body>
+<script>
+    var f = null;
+    $(document).ready(function () {
+        var edit = false;
+        $('tr>td').on('click', function () {
+            var type = $(this).attr('type');
+            if (type == 'fix') {
+                return;
+            } else if (type == undefined) {
+                if (edit) return;
+                edit = true;
+                $(this).html('<input id="edit" type="text" value="' + $(this).html() + '">');
+                $('#edit').focus();
+                f = this;
+                $(this).on('blur', '#edit', function () {
+                    edit = false;
+                    $(f).html($(this).val());
+                    return true;
+                });
+                $(this).on('keydown', '#edit', function (key) {
+                    if (key.originalEvent.keyCode == 13) {
+                        $(this).blur();
+                    }
+                    console.log(key.originalEvent);
+                    return true;
+                });
+            }
+        });
+    });
+
+    function upload() {
+        var pic = $('#image-file')[0].files[0];
+        var formData = new FormData();
+        formData.append('upfile', pic);
+        $.ajax({
+            url: "{:url('admin/index/upload_image')}",//需要链接到服务器地址
+            type: 'post',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                alert(data.msg);
+                if (data.code == 0) {
+                    $(f).html('<img src="__HOME__/assets/upload/images/' + data.url + '" md5="' + data.url + '" width="80px" height="80px" id="qr-image"/>');
+                }
+            }, error: function () {
+                alert('上传失败！');
+            }
+        });
+    }
+</script>
+</html>

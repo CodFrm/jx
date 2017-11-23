@@ -10,45 +10,53 @@
 
 namespace app\index\ctrl;
 
+use app\admin\auth;
 use icf\lib\view;
 
-class index {
+class index extends auth {
 
     public function index() {
         $v = new view();
-        $v->assign('user',getUser(_cookie('uid')));
+        $v->assign('user', $this->userMsg);
         $v->display();
     }
 
     public function login() {
-            $json = ['code' => -1, 'msg' => '系统错误'];
-            $ret = isExist($_GET, [
-                'user' => ['regex' => ['/^[\x{4e00}-\x{9fa5}\w\@\.]{2,}$/u', '用户名不符合规则'], 'msg' => '请输入用户名', 'sql' => 'user'],
-                'pwd' => ['regex' => ['/^[\\~!@#$%^&*()-_=+|{}\[\], .?\/:;\'\"\d\w]{6,16}$/', '密码不符合规范'], 'msg' => '请输入密码', 'sql' => 'password'],
-            ], $data);
-            if ($ret === true) {
-                if ($userMsg = getUser($_GET['user'])) {
-                    if ($userMsg['pwd'] == encodePwd($userMsg['uid'], $_GET['pwd'])) {
-                        setcookie('token', getToken($userMsg['uid']), time() + 86400, '/');
-                        setcookie('uid', $userMsg['uid'], time() + 86400, '/');
-                        $json['code'] = 0;
-                        $json['msg'] = '登陆成功';
-                    } else {
-                        $json['code'] = -1;
-                        $json['msg'] = '密码错误';
-                    }
+        $json = ['code' => -1, 'msg' => '系统错误'];
+        $ret = isExist($_GET, [
+            'user' => ['regex' => ['/^[\x{4e00}-\x{9fa5}\w\@\.]{2,}$/u', '用户名不符合规则'], 'msg' => '请输入用户名', 'sql' => 'user'],
+            'pwd' => ['regex' => ['/^[\\~!@#$%^&*()-_=+|{}\[\], .?\/:;\'\"\d\w]{6,16}$/', '密码不符合规范'], 'msg' => '请输入密码', 'sql' => 'password'],
+        ], $data);
+        if ($ret === true) {
+            if ($userMsg = getUser($_GET['user'])) {
+                if ($userMsg['pwd'] == encodePwd($userMsg['uid'], $_GET['pwd'])) {
+                    setcookie('token', getToken($userMsg['uid']), time() + 86400, '/');
+                    setcookie('uid', $userMsg['uid'], time() + 86400, '/');
+                    $json['code'] = 0;
+                    $json['msg'] = '登陆成功';
                 } else {
-                    $json['msg'] = '账号不存在';
+                    $json['code'] = -1;
+                    $json['msg'] = '密码错误';
                 }
             } else {
-                $json['msg'] = $ret;
+                $json['msg'] = '账号不存在';
             }
-            return json($json);
+        } else {
+            $json['msg'] = $ret;
+        }
+        return json($json);
     }
 
-    public function sign_out(){
-        setcookie('uid','',0,'/');
-        setcookie('token','',0,'/');
-        header('location: '.url(''));
+    public function sign_out() {
+        setcookie('uid', '', 0, '/');
+        setcookie('token', '', 0, '/');
+        header('location: ' . url(''));
+    }
+
+    public function error() {
+        $v = new view();
+        $v->assign('error', _get('error'));
+        $v->assign('url', _get('url'));
+        $v->display();
     }
 }

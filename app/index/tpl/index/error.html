@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>错误页面</title>
+</head>
+<body>
+错误信息:{$error}<br>
+三秒后将跳转至 <a href="{$url}">{$url}</a>
+</body>
+<script>
+    setTimeout(function () {
+        window.location="{$url}";
+    },3000);
+</script>
+</html>
