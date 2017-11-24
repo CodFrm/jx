@@ -155,7 +155,11 @@ class query {
     }
 
     public function count() {
-        return $this->field('count(*)')->find()['count(*)'];
+        $tmpField = $this->field;
+        $this->field = '';
+        $count = $this->field('count(*)')->find()['count(*)'];
+        $this->field = $tmpField;
+        return $count;
     }
 
     /**
@@ -309,6 +313,15 @@ class query {
             }
         }
         return $this;
+    }
+
+    /**
+     * 上一个插入id
+     * @author Farmer
+     * @return string
+     */
+    public function lastinsertid() {
+        return self::$db->lastInsertId();
     }
 
     public function __call($func, $arguments) {

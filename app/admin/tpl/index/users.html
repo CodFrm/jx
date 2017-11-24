@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="__HOME__/static/cmltable/cmltable.css">
 <script src="__HOME__/static/cmltable/cmltable.js"></script>
 <script>
+    var Table;
     $(document).ready(function () {
         Table = $('#user').createCMLTable({
             url: "{:url('admin/oper/operUser','at=get')}",
@@ -14,7 +15,7 @@
                     action: 'add',
                     title: '添加',
                     func: function () {
-                        editShow('编辑', {
+                        var editBox = editShow('编辑', {
                             rows: [
                                 {
                                     title: '名称',
@@ -41,12 +42,13 @@
                                 $.ajax({
                                     url: "{:url('admin/oper/operUser','at=add')}",
                                     type: 'post',
-                                    data: row
-                                }).success(function (json) {
-                                    alert(json.msg);
-                                    if (json.code == 0) {
-                                        editBox.close();
-                                        Table.refresh();
+                                    data: row,
+                                    success: function (json) {
+                                        alert(json.msg);
+                                        if (json.code == 0) {
+                                            editBox.close();
+                                            Table.refresh();
+                                        }
                                     }
                                 });
                                 return false;
@@ -118,10 +120,33 @@
         })
     });
 
-    function changePwd() {
-        $.ajax({
-            url: "{:url('')}"
-        })
+    function changePwd(uid) {
+        var npwd = prompt('请输入新密码', '');
+        if (npwd != null) {
+            $.ajax({
+                url: "{:url('admin/oper/operUser','at=cp')}",
+                data: {uid: uid, npwd: npwd},
+                success: function (obj) {
+                    alert(obj.msg);
+                }
+            })
+        }
+    }
+
+    function addIntegral(uid) {
+        var n = prompt('请输入数量', '');
+        if (n != null) {
+            $.ajax({
+                url: "{:url('admin/oper/operUser','at=adi')}",
+                data: {uid: uid, n: n},
+                success: function (obj) {
+                    alert(obj.msg);
+                    if (obj.code == 0) {
+                        Table.refresh();
+                    }
+                }
+            })
+        }
     }
 
     function upload() {

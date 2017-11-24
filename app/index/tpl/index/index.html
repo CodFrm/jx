@@ -17,7 +17,7 @@
     {if isLogin()}
     <!--登录成功之后隐藏了-->
     <div class="user-msg">
-        <img class="logo" src="__HOME__/static/image/avatar.png" alt="">
+        <img class="logo" src="__HOME__/static/res/images/{$user['avatar']}" alt="">
         <div class="left">
             <span class="user-name">{$user['user']}</span><span>积分:{$user['integral']} 用户组:{$user['group'][0]['group_name']}</span>
             <a href="{:url('index/index/sign_out')}">退出</a>

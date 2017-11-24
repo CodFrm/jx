@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息修改页面</title>
+</head>
+<script src="__HOME__/static/js/jquery-3.1.1.min.js"></script>
+<style>
+    .mid {
+        margin: 0 auto;
+        width: 300px;
+        border: 1px solid #cccccc;
+        padding: 30px;
+        overflow: hidden;
+        border-radius: 4px;
+        box-shadow: 0px 0px 5px #6d6d6d;
+    }
+
+    .mid:before {
+        content: attr(title);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 0;
+        background-color: #fff;
+    }
+
+    label {
+        display: inline-block;
+        width: 100px;
+    }
+
+    button {
+        margin-top: 10px;
+        float: right;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        display: inline-block;
+        width: calc(100% - 105px);
+    }
+</style>
+<body>
+<div class="mid" title="用户信息修改">
+    <label>用户名:</label><input class="user" type="text" value="{$user['user']}"><br>
+    <label>密码:</label><input class="pwd" type="password"><br>
+    <label>新密码:</label><input class="npwd" type="password"><br>
+    <label>再输入一次:</label><input class="confirm" type="password"><br>
+    <button onclick="post(this)">提交</button>
+</div>
+
+</body>
+<script>
+    function post() {
+        var user = $('.user').val();
+        var pwd = $('.pwd').val();
+        var npwd = $('.npwd').val();
+        var confirm = $('.confirm').val();
+        if (npwd != confirm) {
+            alert('两次输入的密码不同');
+            return;
+        }
+        $.ajax({
+            url: "{:url('index/user/pwd')}",
+            type: 'post',
+            data: {user: user, pwd: pwd, npwd: npwd, cpwd: confirm},
+            success: function (obj) {
+                alert(obj.msg);
+                if (obj.code == 0) {
+                    window.location="{:url('/')}";
+                }
+            }
+        });
+
+    }
+</script>
+</html>

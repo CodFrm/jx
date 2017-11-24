@@ -8,14 +8,3 @@
  *============================
  */
 
-/**
- * 编码密码
- * @author Farmer
- * @param $uid
- * @param $pwd
- * @return string
- */
-function encodePwd($uid, $pwd) {
-    $str = md5($uid) . md5($pwd) . _config('pwd_deal');
-    return md5($str);
-}

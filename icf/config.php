@@ -28,7 +28,8 @@ return [
             'debug/{test}' => 'index->debug'
         ],
         'get' => [
-            'd/{sid}' => 'index->api->download'
+            'd/{sid}' => 'index->api->download',
+            'admin'=>'admin->index->index'
         ]
     ],
     'tpl_suffix' => 'html',

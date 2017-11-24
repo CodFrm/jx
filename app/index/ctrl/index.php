@@ -11,6 +11,7 @@
 namespace app\index\ctrl;
 
 use app\admin\auth;
+use app\common\user;
 use icf\lib\view;
 
 class index extends auth {
@@ -28,8 +29,8 @@ class index extends auth {
             'pwd' => ['regex' => ['/^[\\~!@#$%^&*()-_=+|{}\[\], .?\/:;\'\"\d\w]{6,16}$/', '密码不符合规范'], 'msg' => '请输入密码', 'sql' => 'password'],
         ], $data);
         if ($ret === true) {
-            if ($userMsg = getUser($_GET['user'])) {
-                if ($userMsg['pwd'] == encodePwd($userMsg['uid'], $_GET['pwd'])) {
+            if ($userMsg = user::getUser($_GET['user'])) {
+                if ($userMsg['pwd'] == user::encodePwd($userMsg['uid'], $_GET['pwd'])) {
                     setcookie('token', getToken($userMsg['uid']), time() + 86400, '/');
                     setcookie('uid', $userMsg['uid'], time() + 86400, '/');
                     $json['code'] = 0;

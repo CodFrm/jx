@@ -15,7 +15,7 @@ use icf\lib\db;
 
 class index extends auth {
     public function index() {
-
+        view()->display();
     }
 
     public function add() {

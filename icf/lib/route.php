@@ -97,7 +97,7 @@ class route {
         }
         if (strpos($param, 'p') !== false) {
             //处理后方参数
-            preg_match_all('#([\S][^\{^\}^/]*)/([\S][^\{^\}^/]*)#', $tmpParam, $matchArr, PREG_SET_ORDER);
+            preg_match_all('#/([\S][^\{^\}^/]*)/([\S][^\{^\}^/]*)#', '/' . $tmpParam, $matchArr, PREG_SET_ORDER);
             foreach ($matchArr as $item) {
                 self::$get[$item[1]] = $item[2];
             }
