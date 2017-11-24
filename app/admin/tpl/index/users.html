@@ -1,0 +1,150 @@
+{include 'public/header'}
+<div id="user"></div>
+
+</body>
+<link rel="stylesheet" href="__HOME__/static/cmltable/cmltable.css">
+<script src="__HOME__/static/cmltable/cmltable.js"></script>
+<script>
+    $(document).ready(function () {
+        Table = $('#user').createCMLTable({
+            url: "{:url('admin/oper/operUser','at=get')}",
+            keyID: 'uid',
+            action: [
+                {
+                    action: 'add',
+                    title: '添加',
+                    func: function () {
+                        editShow('编辑', {
+                            rows: [
+                                {
+                                    title: '名称',
+                                    value: '',
+                                    field: 'user'
+                                }, {
+                                    title: '密码',
+                                    value: '',
+                                    field: 'pwd'
+                                }, {
+                                    title: '邮箱',
+                                    value: '',
+                                    field: 'email'
+                                }, {
+                                    type: 'html',
+                                    value:
+                                    '<img src="__HOME__/assets/upload/images/' + '" width="80px" height="80px" id="qr-image"/><br>' +
+                                    '<button class="cml-btn" id="upload-image">上传</button>' +
+                                    '<button class="cml-btn" id="clear-image">清除</button>' +
+                                    '<input type="file" accept="image/jpeg, image/gif, image/png" onchange="upload();" name="file" id="image-file" style="display: none">'
+                                }],
+                            post: function (row) {
+                                row.image = $('#qr-image').attr('file');
+                                $.ajax({
+                                    url: "{:url('admin/oper/operUser','at=add')}",
+                                    type: 'post',
+                                    data: row
+                                }).success(function (json) {
+                                    alert(json.msg);
+                                    if (json.code == 0) {
+                                        editBox.close();
+                                        Table.refresh();
+                                    }
+                                });
+                                return false;
+                            }
+                        });
+                    }
+                }, {
+                    action: 'delete',
+                    title: '删除',
+                    func: function (obj) {
+                        alert('暂时不支持删除用户');
+//                    msgShow('提示', '真的要删除选中收款方式吗?', {
+//                        confirm: function () {
+//                            $.ajax({
+//                                url: "{:url('admin/oper/operReceipt','at=del')}",
+//                                type: 'post',
+//                                data: obj.getSelect()
+//                            }).success(function (json) {
+//                                msgShow('提示', json['msg'], {
+//                                    sleep: 3000, confirm: function () {
+//                                        obj.refresh();
+//                                    }
+//                                });
+//                            });
+//                        }
+//                    });
+                    }
+                }],
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'uid',
+                title: 'UID'
+            }, {
+                field: 'user',
+                title: '账号名'
+            }, {
+                field: 'avatar',
+                title: '头像',
+                format: function (avatar) {
+                    return '<img src="__HOME__/static/res/images/' + avatar + '" width="24px" height="24px" />';
+                }
+            }, {
+                field: 'email',
+                title: '邮箱'
+            }, {
+                field: 'integral',
+                title: '积分'
+            },
+                {
+                    field: 'uid',
+                    title: '操作',
+                    format: function (uid) {
+                        var ret = '<button class="cml-btn btn-edit" onclick="changePwd(';
+                        ret += uid + ')">改个密码</button>';
+                        ret += '<button class="cml-btn btn-edit" onclick="addIntegral(';
+                        ret += uid + ')">加点积分</button>';
+                        return ret;
+                    }
+                }
+            ]
+        });
+        $(document).on('click', '#upload-image', function (event) {
+            $('#image-file').click();
+        });
+        $(document).on('click', '#clear-image', function (event) {
+            $('#qr-image').attr('src', '');
+            $('#qr-image').attr('file', '');
+        })
+    });
+
+    function changePwd() {
+        $.ajax({
+            url: "{:url('')}"
+        })
+    }
+
+    function upload() {
+        var pic = $('#image-file')[0].files[0];
+        var formData = new FormData();
+        formData.append('upfile', pic);
+        $.ajax({
+            url: "{:url('admin/index/upload_image')}",//需要链接到服务器地址
+            type: 'post',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                alert(data.msg);
+                if (data.code == 0) {
+                    $('#qr-image').attr('src', "__HOME__/static/res/images/" + data.url);
+                    $('#qr-image').attr('file', data.url);
+                }
+            }, error: function () {
+                alert('上传失败！');
+            }
+        });
+    }
+</script>
+</html>

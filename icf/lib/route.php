@@ -169,28 +169,32 @@ class route {
         if (file_exists($comPath . 'common.php')) {
             require_once $comPath . 'common.php';
         }
-        $tmp = self::$classNamePace;
-        $object = new $tmp();
-        // 获取方法参数
-        $method = new \ReflectionMethod ($object, self::$action);
-        // 参数绑定
-        $param = [];
-        $_GET = array_merge($_GET, self::$get);
-        foreach ($method->getParameters() as $value) {
-            if ($val = _get($value->getName())) {
-                $param [] = $val;
-            } else {
-                $param [] = $value->getDefaultValue();
+        try {
+            $tmp = self::$classNamePace;
+            $object = new $tmp();
+            // 获取方法参数
+            $method = new \ReflectionMethod ($object, self::$action);
+            // 参数绑定
+            $param = [];
+            $_GET = array_merge($_GET, self::$get);
+            foreach ($method->getParameters() as $value) {
+                if ($val = _get($value->getName())) {
+                    $param [] = $val;
+                } else {
+                    $param [] = $value->getDefaultValue();
+                }
             }
-        }
-        $data = call_user_func_array([
-            $object,
-            self::$action
-        ], $param);
-        if (is_array($data)) {
-            echo json($data);
-        } else {
-            echo $data;
+            $data = call_user_func_array([
+                $object,
+                self::$action
+            ], $param);
+            if (is_array($data)) {
+                echo json($data);
+            } else {
+                echo $data;
+            }
+        } catch (\Exception $e) {
+            _404();
         }
         return true;
     }

@@ -22,11 +22,17 @@ class index extends auth {
 
     }
 
+    public function users() {
+        view()->assign('title', '用户管理');
+        view()->display();
+    }
+
     /**
      * 审核文件
      * @author Farmer
      */
     public function audit() {
+        view()->assign('title', '文件审核');
         $hDir = opendir(__ROOT_ . '/static/res/tmp');
         $fileList = [];
         while ($row = readdir($hDir)) {
@@ -118,7 +124,7 @@ class index extends auth {
                         'soft_path' => $newFile,
                         'soft_type' => 1,
                         'soft_time' => time(),
-                        'soft_uid'=>0,
+                        'soft_uid' => 0,
                     ]);
             }
             $retJson['code'] = 0;
