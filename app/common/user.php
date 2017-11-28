@@ -89,6 +89,7 @@ class user {
         if ($ret === true) {
             $pwdUrl = url('index/user/pwd');
             //添加用户
+            $data['integral'] = 10;
             db::table('user')->insert($data);
             $uid = db::table()->lastinsertid();
             set_time_limit(0);
