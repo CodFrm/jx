@@ -37,6 +37,23 @@
     </div>
     {/if}
 </div>
+<div class="nav">
+    <div class="nav-item">
+        <a href="#">分类1</a>
+    </div>
+    <div class="nav-item">
+        <a href="#">分类2</a>
+        <div class="nav-sub">
+            <div class="nav-sub-item">
+                <a href="#">子分类</a>
+            </div>
+        </div>
+    </div>
+    <div class="search">
+        <input type="text" class="keydown" placeholder="请输入搜索内容">
+        <button class="btn-search"><img src="__HOME__/static/image/search.png" class="search-img"></button>
+    </div>
+</div>
 <div id="content">
     <div id="soft-list">
 
@@ -54,7 +71,8 @@
      * js交互调用php的接口,去登录账号
      */
     window.onload = function () {
-        {if !isLogin()}
+//        {if !isLogin()}
+
         document.getElementById('login').onclick = function () {
             var xmlhttp;
             if (window.XMLHttpRequest) {
@@ -80,9 +98,10 @@
             xmlhttp.send();
 
         };
-        {/if}
-            var dlist = new dList(document.getElementById('soft-list'));
-            dlist.load();
-        }
+//        {/if}
+
+        var dlist = new dList(document.getElementById('soft-list'));
+        dlist.load();
+    }
 </script>
 </html>

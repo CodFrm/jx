@@ -1,10 +1,15 @@
+* {
+    font-family: 微软雅黑, "Microsoft YaHei";
+}
+
 body {
     margin: 0 auto;
+    min-width: 700px;
     width: 60%;
 }
 
 #header {
-    border-bottom: 1px solid #808080;
+    min-width: 700px;
     margin-top: 10px;
 }
 
@@ -46,11 +51,19 @@ a {
     line-height: 32px;
     overflow: hidden;
 }
+
 /**
  first-child 第一个
  */
-.soft-list > .item:first-child{
+.soft-list > .item:first-child {
     border-top: 1px solid #cacaca;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.soft-list > .item:nth-last-of-type(2) {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
 }
 
 .soft-list > .item > .item-left {
@@ -63,7 +76,7 @@ a {
     text-align: center;
 }
 
-.download{
+.download {
     display: block;
     width: 70px;
     padding: 0 10px 0 10px;
@@ -101,7 +114,6 @@ a {
     font-size: 14px;
     margin: 0;
 }
-
 
 .page > .page-item {
     display: inline-block;
@@ -156,3 +168,91 @@ a {
 .user-msg > .left > a {
     color: #2196F3;
 }
+
+.nav {
+    margin-top: 10px;
+    overflow: hidden;
+    background: linear-gradient(#03A9F4, #2196F3);
+    border-radius: 4px;
+}
+
+.nav > .nav-item:first-child {
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+    padding-left: 4px;
+}
+
+.nav > .nav-item {
+    display: inline-block;
+    cursor: pointer;
+    background: linear-gradient(#03A9F4, #2196F3);
+    padding: 4px;
+    float: left;
+}
+
+.nav > .nav-item a {
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.nav > .nav-item:not(:first-child):before {
+    content: ' ';
+    border-left: 1px solid #1cc3cc;
+    position: relative;
+    left: -4px;
+}
+
+.nav > .nav-item:hover {
+    background: #1690f4;
+}
+
+.nav > .search {
+    float: right;
+    margin-right: 10px;
+}
+
+.nav > .search {
+    height: 28px;
+    line-height: 25px;
+}
+
+.search > .keydown {
+    border-radius: 2px;
+    border: 0;
+    padding: 2px;
+    outline: none;
+}
+
+.btn-search {
+    border: 0;
+    cursor: pointer;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+
+.btn-search > .search-img {
+    width: 16px;
+    height: 16px;
+}
+
+.nav > .nav-item:hover .nav-sub {
+    display: block;
+}
+
+.nav-sub {
+    display: none;
+    position: absolute;
+    margin-top: 4px;
+    margin-left: -4px;
+    min-width: 80px;
+    background: rgb(215, 215, 215);
+    border: 1px solid rgb(201, 201, 201);
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    text-align: center;
+}
+
+.nav-sub > .nav-sub-item:hover {
+    background: #c2cad8;
+}
+
