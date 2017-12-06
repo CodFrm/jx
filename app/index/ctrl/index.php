@@ -12,12 +12,16 @@ namespace app\index\ctrl;
 
 use app\admin\auth;
 use app\common\user;
+use icf\lib\db;
 use icf\lib\view;
 
 class index extends auth {
 
-    public function index() {
+    public function index($sort_id=0,$keydown='') {
         $v = new view();
+        $v->assign('breadcrumb',outBreadcrumbHtml($sort_id));
+        $v->assign('sort_id', $sort_id);
+        $v->assign('keydown', $keydown);
         $v->assign('user', $this->userMsg);
         $v->display();
     }
@@ -60,4 +64,5 @@ class index extends auth {
         $v->assign('url', _get('url'));
         $v->display();
     }
+
 }

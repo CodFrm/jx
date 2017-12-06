@@ -16,22 +16,45 @@ use app\common\user;
 use icf\lib\db;
 
 class api extends auth {
+    public function forSubSort_SQL($sid) {
+        $sql = '';
+        $tmpRec = db::table('sort')->where('sort_fid', $sid)->select();
+        while ($row = $tmpRec->fetch()) {
+            $sql .= " `sort_id`={$row['sort_id']} or ";
+            $sql .= $this->forSubSort_SQL($row['sort_id']);
+        }
+        return $sql;
+    }
+
     /**
      * 获取列表接口
      * @author Farmer
      */
-    public function getSoftList() {
+    public function getSoftList($sid = 0, $keydown = '') {
         $retJson = ['code' => 0, 'msg' => 'success'];
         $page = (isset($_GET['page']) ? $_GET['page'] : 1);
-        $rec = db::table('soft_list')
-            ->where('soft_type', 1)
+        if ($sid > 0) {
+            $db = db::table('soft_sort as a')
+                ->join(':soft_list as b', 'a.soft_id=b.sid');
+            $sql = $this->forSubSort_SQL($sid);
+            $db->where("( `sort_id`=$sid or " . substr($sql, 0, strlen($sql) - 3) . ' )');
+        } else {
+            $db = db::table('soft_list');
+        }
+        $db->where('soft_type', 1)
             ->field(['sid', 'soft_name', 'soft_exp', 'soft_logo', 'soft_path', 'soft_time'])
-            ->limit(($page - 1) * 10, 10)->order('sid')->select();
+            ->limit(($page - 1) * 10, 10)->order('sid');
+
+        if (!empty($keydown)) {
+            $db->where('soft_name', "%{$keydown}%", 'like')->_or();
+            $db->where('soft_exp', "%{$keydown}%", 'like');
+        }
+        $count = $db->count();
+        $rec = $db->select();
         while ($row = $rec->fetch()) {
             $row['soft_path'] = getFileName($row['soft_path']);
             $retJson['rows'][] = $row;
         }
-        $count = db::table('soft_list')->where('soft_type', 1)->count();
         $retJson['total'] = ceil($count / 10);
         return $retJson;
     }

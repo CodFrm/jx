@@ -1,7 +1,7 @@
 /**
  js,动态加载软件列表
  */
-var dList = function (obj) {
+var dList = function (obj, sid, keydown) {
     obj.className += 'soft-list';//加一个class样式
     obj.page = 1;//记录现在的页码
     /**
@@ -10,7 +10,7 @@ var dList = function (obj) {
     obj.load = function (page) {
         page = page || obj.page;
         get({
-            url: home + '/index/api/getSoftList?page=' + page,//URL打错了来着
+            url: home + '/index/api/getSoftList?keydown=' + keydown + '&sid=' + sid + '&page=' + page,//URL打错了来着
             success: function (str) {
                 var json = JSON.parse(str);
                 obj.innerHTML = '';

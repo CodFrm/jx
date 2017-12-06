@@ -37,28 +37,26 @@
     </div>
     {/if}
 </div>
+
 <div class="nav">
+    {foreach get_nav() as $key=>$value}
     <div class="nav-item">
-        <a href="#">分类1</a>
+        <a href="__HOME__/{$value['nav_url']}">{$value['nav_title']}</a>
+        {:outSubNavHtml($value['sub'])}
     </div>
-    <div class="nav-item">
-        <a href="#">分类2</a>
-        <div class="nav-sub">
-            <div class="nav-sub-item">
-                <a href="#">子分类</a>
-            </div>
-        </div>
-    </div>
-    <div class="search">
-        <input type="text" class="keydown" placeholder="请输入搜索内容">
+    {/foreach}
+    <form method="GET" class="search">
+        <input type="text"  name="keydown" class="keydown" placeholder="请输入搜索内容">
         <button class="btn-search"><img src="__HOME__/static/image/search.png" class="search-img"></button>
-    </div>
+    </form>
+</div>
+<div class="breadcrumb">
+    {$breadcrumb}
 </div>
 <div id="content">
     <div id="soft-list">
 
     </div>
-
 </div>
 
 <div style="margin-top: 45px;">
@@ -100,7 +98,7 @@
         };
 //        {/if}
 
-        var dlist = new dList(document.getElementById('soft-list'));
+        var dlist = new dList(document.getElementById('soft-list'), '{$sort_id}','{$keydown}');
         dlist.load();
     }
 </script>

@@ -17,7 +17,7 @@ require_once 'functions.php';
 date_default_timezone_set('PRC');
 $home = $_SERVER['REQUEST_URI'];
 if (!empty($_SERVER['QUERY_STRING'])) {
-    $home=substr($_SERVER['REQUEST_URI'],0,strpos($home,'?'));
+    $home = substr($_SERVER['REQUEST_URI'], 0, strpos($home, '?'));
 }
 if (isset($_SERVER['PATH_INFO'])) {
     $home = str_replace($_SERVER['PATH_INFO'], '', $home);
@@ -46,9 +46,10 @@ class index {
             ini_set('display_errors', '0');
         }
         //记录这一次日志
-        if(input('config.log')){
-            $log=new log();
-            $log->notice('ip:'.getip().' url:'.getReqUrl());
+        if (input('config.log')) {
+            $log = new log();
+            $log->notice('ip:' . getip() . ' url:' . getReqUrl() . ' post:' . json_encode($_POST, JSON_UNESCAPED_UNICODE)
+                . ' cookie:' . json_encode($_COOKIE, JSON_UNESCAPED_UNICODE));
         }
         //路由加载
         if (isset($config['route'])) {

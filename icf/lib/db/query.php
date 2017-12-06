@@ -156,9 +156,11 @@ class query {
 
     public function count() {
         $tmpField = $this->field;
+        $tmpLimit=$this->limit;
         $this->field = '';
         $count = $this->field('count(*)')->find()['count(*)'];
         $this->field = $tmpField;
+        $this->limit=$tmpLimit;
         return $count;
     }
 
