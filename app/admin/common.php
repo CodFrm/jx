@@ -33,12 +33,13 @@ function getGroup($uid) {
     return [];
 }
 
-function isAuth($group_id) {
+function isAuth($group_id, &$auth = array()) {
     $rec = db::table('groupauth as a|auth as b')->where(['group_id' => $group_id, 'a.auth_id=b.auth_id'])->select();
     $model = input('model');
     $ctrl = input('ctrl');
     $action = input('action');
     while ($msg = $rec->fetch()) {
+        $auth[$msg['auth_interface']]=1;
         if ($count = substr_count($msg['auth_interface'], '->')) {
             if ($count == 1) {
                 if (($model . '->' . $ctrl) == $msg['auth_interface']) {

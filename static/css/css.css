@@ -1,0 +1,19 @@
+.box{
+    font-size: 14px;
+    text-align: center;
+}
+.box > .box-header {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    background: #e2e2e2;
+    padding: 4px;
+    box-shadow: 0px 0px 0px 1px #c7c6c6;
+}
+
+.box > .box-content {
+    padding: 4px;
+    background: #ffffff;
+    box-shadow: 0px 0px 0px 1px #c7c6c6;
+    overflow-x: hidden;
+    min-height: 20px;
+}

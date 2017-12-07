@@ -16,12 +16,12 @@ use app\common\user;
 use icf\lib\db;
 
 class api extends auth {
-    public function forSubSort_SQL($sid) {
+    public static function forSubSort_SQL($sid) {
         $sql = '';
         $tmpRec = db::table('sort')->where('sort_fid', $sid)->select();
         while ($row = $tmpRec->fetch()) {
             $sql .= " `sort_id`={$row['sort_id']} or ";
-            $sql .= $this->forSubSort_SQL($row['sort_id']);
+            $sql .= self::forSubSort_SQL($row['sort_id']);
         }
         return $sql;
     }
@@ -36,8 +36,12 @@ class api extends auth {
         if ($sid > 0) {
             $db = db::table('soft_sort as a')
                 ->join(':soft_list as b', 'a.soft_id=b.sid');
-            $sql = $this->forSubSort_SQL($sid);
-            $db->where("( `sort_id`=$sid or " . substr($sql, 0, strlen($sql) - 3) . ' )');
+            $sql = self::forSubSort_SQL($sid);
+            if ($sql == '') {
+                $db->where("`sort_id`=$sid");
+            } else {
+                $db->where("( `sort_id`=$sid or " . substr($sql, 0, strlen($sql) - 3) . ' )');
+            }
         } else {
             $db = db::table('soft_list');
         }

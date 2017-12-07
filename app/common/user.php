@@ -42,8 +42,7 @@ class user {
                 return true;
             }
             $user = uidUser(_cookie('uid'));
-            $size = filesize($filename = __ROOT_ . '/static/res/' . $soft['soft_path']);
-            $spend = ceil($size / 1024 / 1024 / 500);
+            $spend = $soft['soft_price'] <= 0 ? 1 : $soft['soft_price'] + 1;
             if ($user['integral'] < $spend) {
                 return '积分不足';
             }

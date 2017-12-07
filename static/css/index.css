@@ -158,14 +158,16 @@ a {
 .user-msg > .left {
     float: left;
     margin-right: 10px;
+    font-size: 12px;
+    line-height: 30px;
+    text-align: right;
 }
 
-.user-msg > .left > .user-name {
+.user-msg > .left > .user-oper {
     display: block;
-    line-height: 40px;
 }
 
-.user-msg > .left > a {
+.user-msg > .left > .user-oper > a {
     color: #2196F3;
 }
 
@@ -269,7 +271,7 @@ a {
     background: #c2cad8;
 }
 
-.breadcrumb{
+.breadcrumb {
     margin-top: 4px;
     border: 1px solid #ccc;
     display: inline-block;
@@ -280,8 +282,26 @@ a {
     color: #929292;
     line-height: 15px;
     vertical-align: middle;
+    min-width: 38px;
+    text-align: center;
 }
 
-.breadcrumb > a{
+.breadcrumb > a {
     color: #03A9F4;
+}
+
+.select-group {
+    /*border: 0px solid #cccccc;*/
+    /*border-radius: 2px;*/
+    border: 0px;
+    outline: none;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    width: 40px;
+    font-size: 12px;
+}
+
+.select-group > option {
+    text-align: center;
 }

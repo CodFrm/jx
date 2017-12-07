@@ -1,58 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>信院计算机协会下载站</title>
-    <link rel="stylesheet" href="__HOME__/static/css/index.css">
-    <script src="__HOME__/static/js/downlist.js"></script>
-</head>
-
-<body>
-<div id="header">
-    <div class="title">
-        <img class="logo" src="__HOME__/static/image/logo.jpg" alt="" srcset="">
-        <span>信院计算机协会下载站</span>
-    </div>
-    {if isLogin()}
-    <!--登录成功之后隐藏了-->
-    <div class="user-msg">
-        <img class="logo" src="__HOME__/static/res/images/{$user['avatar']}" alt="">
-        <div class="left">
-            <span class="user-name">{$user['user']}</span><span>积分:{$user['integral']} 用户组:{$user['group'][0]['group_name']}</span>
-            <a href="{:url('index/index/sign_out')}">退出</a>
-        </div>
-    </div>
-    {else}
-    <button class="btn" id="login">登陆</button>
-    <div class="login">
-        <div class="form-group">
-            <label>账号:</label>
-            <input type="text" id="user">
-        </div>
-        <div class="form-group">
-            <label>密码:</label>
-            <input type="password" id="pwd">
-        </div>
-    </div>
-    {/if}
-</div>
-
-<div class="nav">
-    {foreach get_nav() as $key=>$value}
-    <div class="nav-item">
-        <a href="__HOME__/{$value['nav_url']}">{$value['nav_title']}</a>
-        {:outSubNavHtml($value['sub'])}
-    </div>
-    {/foreach}
-    <form method="GET" class="search">
-        <input type="text"  name="keydown" class="keydown" placeholder="请输入搜索内容">
-        <button class="btn-search"><img src="__HOME__/static/image/search.png" class="search-img"></button>
-    </form>
-</div>
-<div class="breadcrumb">
-    {$breadcrumb}
-</div>
+{include 'header'}
 <div id="content">
     <div id="soft-list">
 
@@ -62,7 +8,6 @@
 <div style="margin-top: 45px;">
     <p>我站提供用户下载的所有内容均来自互联网。如有内容侵犯您的版权或其他利益的，请编辑邮件并加以说明发送到我们的客服邮箱code.farmer@qq.com。我们会在三个工作日内为您删除。</p>
 </div>
-</body>
 <script>
     var home = '__HOME__';
     /**
@@ -98,8 +43,8 @@
         };
 //        {/if}
 
-        var dlist = new dList(document.getElementById('soft-list'), '{$sort_id}','{$keydown}');
+        var dlist = new dList(document.getElementById('soft-list'), '{$sort_id}', '{$keydown}');
         dlist.load();
     }
 </script>
-</html>
+{include 'footer'}

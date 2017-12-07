@@ -17,7 +17,7 @@ use app\common\user;
 use icf\lib\db;
 
 class oper extends auth {
-    private function getOper(db\query $table, $field = '*', $page = 1, $keyword = []) {
+    public static function getOper(db\query $table, $field = '*', $page = 1, $keyword = []) {
         if ($keyword) {
             foreach ($keyword as $key => $value) {
                 $table->where($key, "%$value%", 'like');
@@ -32,7 +32,7 @@ class oper extends auth {
     public function operUser($at = 'get', $page = 1, $keyword = '') {
         $ret = [];
         if ($at == 'get') {
-            return $this->getOper(db::table('user'), 'uid,user,email,avatar,integral', $page, ['user' => $keyword]);
+            return self::getOper(db::table('user'), 'uid,user,email,avatar,integral', $page, ['user' => $keyword]);
         } else if ($at == 'add') {
             $_POST['avatar']=$_POST['image'];
             $ret = user::applyUser($_POST);

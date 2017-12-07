@@ -27,7 +27,7 @@ class auth {
             $this->userMsg['group'] = getGroup($_COOKIE['uid']);
         }
         foreach ($this->userMsg['group'] as $item) {
-            if (isAuth($item['group_id'])) {
+            if (isAuth($item['group_id'],$this->userMsg['auth'])) {
                 $auth = true;
                 break;
             }

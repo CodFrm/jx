@@ -31,12 +31,12 @@ function getSubNav($nav_id = 0) {
 }
 
 function outSubNavHtml($nav) {
-    if($nav==[]){
+    if ($nav == []) {
         return '';
     }
     $html = '<div class="nav-sub">';
     foreach ($nav as $key => $value) {
-        $html .= '<div class="nav-sub-item"><a href="'.__HOME_.'/' . $value['nav_url'] . '"' . ">{$value['nav_title']}</a>";
+        $html .= '<div class="nav-sub-item"><a href="' . __HOME_ . '/' . $value['nav_url'] . '"' . ">{$value['nav_title']}</a>";
         $html .= outSubNavHtml($value['sub']);
         $html .= '</div>';
     }
@@ -44,12 +44,13 @@ function outSubNavHtml($nav) {
     return $html;
 }
 
-function outBreadcrumbHtml($sid){
-    $html='';
-    while($row=db::table('sort')->where(['sort_id'=>$sid])->find()){
-        $html='<a href="'.__HOME_.'/sort/'.$row['sort_id'].'">'.$row['sort_name'].'</a>'.'/'.$html;
-        $sid=$row['sort_fid'];
+function outBreadcrumbHtml($sid) {
+    $html = '';
+    while ($row = db::table('sort')->where(['sort_id' => $sid])->find()) {
+        $html = '<a href="' . __HOME_ . '/sort/' . $row['sort_id'] . '">' . $row['sort_name'] . '</a>' . '/' . $html;
+        $sid = $row['sort_fid'];
     }
-    $html=substr($html,0,strlen($html)-1);
-    return (empty($html)?'<a href="'.__HOME_.'">首页</a>':$html);
+    $html = substr($html, 0, strlen($html) - 1);
+    return (empty($html) ? '<a href="' . __HOME_ . '">首页</a>' : $html);
 }
+

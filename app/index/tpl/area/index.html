@@ -1,0 +1,142 @@
+{include 'index/header'}
+<br>
+<div class="box" style="display: inline-block;margin-top: 10px;">
+    <div class="box-header">
+        我所管理的分区
+    </div>
+    <div class="box-content" style="font-size: 12px;line-height: 20px">
+        {foreach $area_manage as $item}
+        <span style="color: #03A9F4">{$item['sort_name']}</span>
+        {/foreach}
+    </div>
+</div>
+<div class="box" style="display: inline-block;width: 120px;margin-top: 10px;">
+    <div class="box-header">
+        分区内容条数
+    </div>
+    <div class="box-content">
+        {$total}
+    </div>
+</div>
+<div class="box" style="margin-top: 10px;text-align: left;">
+    <div class="box-header">
+        待审核列表
+    </div>
+    <div class="box-content">
+        <div id="user"></div>
+    </div>
+</div>
+
+
+<link rel="stylesheet" href="__HOME__/static/cmltable/cmltable.css">
+<script src="__HOME__/static/cmltable/cmltable.js"></script>
+<script>
+    var Table;
+    $(document).ready(function () {
+        Table = $('#user').createCMLTable({
+            url: "{:url('index/area/oper','at=get')}",
+            keyID: 'uid',
+            action: [
+                {
+                    action: 'pass',
+                    title: '通过',
+                    func: function () {
+                    }
+                }, {
+                    action: 'delete',
+                    title: '拒绝',
+                    func: function (obj) {
+                    }
+                }],
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'uid',
+                title: '上传用户'
+            }, {
+                field: 'file',
+                title: '上传文件'
+            }, {
+                field: 'image',
+                title: '上传图标',
+                format: function (avatar) {
+                    return '<img src="__HOME__/static/res/images/' + avatar + '" width="24px" height="24px" />';
+                }
+            }, {
+                field: 'integral',
+                title: '积分'
+            }, {
+                field: 'uid',
+                title: '操作',
+                format: function (uid) {
+                    var ret = '<button class="cml-btn btn-edit" onclick="changePwd(';
+                    ret += uid + ')">改个密码</button>';
+                    ret += '<button class="cml-btn btn-edit" onclick="addIntegral(';
+                    ret += uid + ')">加点积分</button>';
+                    return ret;
+                }
+            }
+            ]
+        });
+        $(document).on('click', '#upload-image', function (event) {
+            $('#image-file').click();
+        });
+        $(document).on('click', '#clear-image', function (event) {
+            $('#qr-image').attr('src', '');
+            $('#qr-image').attr('file', '');
+        })
+    });
+
+    function changePwd(uid) {
+        var npwd = prompt('请输入新密码', '');
+        if (npwd != null) {
+            $.ajax({
+                url: "{:url('admin/oper/operUser','at=cp')}",
+                data: {uid: uid, npwd: npwd},
+                success: function (obj) {
+                    alert(obj.msg);
+                }
+            })
+        }
+    }
+
+    function addIntegral(uid) {
+        var n = prompt('请输入数量', '');
+        if (n != null) {
+            $.ajax({
+                url: "{:url('admin/oper/operUser','at=adi')}",
+                data: {uid: uid, n: n},
+                success: function (obj) {
+                    alert(obj.msg);
+                    if (obj.code == 0) {
+                        Table.refresh();
+                    }
+                }
+            })
+        }
+    }
+
+    function upload() {
+        var pic = $('#image-file')[0].files[0];
+        var formData = new FormData();
+        formData.append('upfile', pic);
+        $.ajax({
+            url: "{:url('admin/index/upload_image')}",//需要链接到服务器地址
+            type: 'post',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                alert(data.msg);
+                if (data.code == 0) {
+                    $('#qr-image').attr('src', "__HOME__/static/res/images/" + data.url);
+                    $('#qr-image').attr('file', data.url);
+                }
+            }, error: function () {
+                alert('上传失败！');
+            }
+        });
+    }
+</script>
+{include 'index/footer'}

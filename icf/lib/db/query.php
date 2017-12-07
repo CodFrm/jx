@@ -32,6 +32,7 @@ class query {
     private $where = '';
     private $field = '';
     private $order = '';
+    private $group = '';
     private $limit = '';
     private $join = '';
 
@@ -156,11 +157,11 @@ class query {
 
     public function count() {
         $tmpField = $this->field;
-        $tmpLimit=$this->limit;
+        $tmpLimit = $this->limit;
         $this->field = '';
         $count = $this->field('count(*)')->find()['count(*)'];
         $this->field = $tmpField;
-        $this->limit=$tmpLimit;
+        $this->limit = $tmpLimit;
         return $count;
     }
 
@@ -215,6 +216,7 @@ class query {
      */
     private function dealParam() {
         $sql = $this->where ?: '';
+        $sql .= $this->group ?: '';
         $sql .= $this->order ?: '';
         $sql .= $this->limit ?: '';
         return $sql;
@@ -245,6 +247,11 @@ class query {
      */
     public function order($field, $rule = 'desc') {
         $this->order = " order by `$field` $rule";
+        return $this;
+    }
+
+    public function group($field) {
+        $this->group = " group by `$field`";
         return $this;
     }
 
