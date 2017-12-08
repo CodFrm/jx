@@ -195,7 +195,11 @@ class route {
                 echo $data;
             }
         } catch (\Exception $e) {
-            _404();
+            if(_config('debug')) {
+                echo 'error:'.$e->getMessage();
+            }else {
+                _404();
+            }
         }
         return true;
     }

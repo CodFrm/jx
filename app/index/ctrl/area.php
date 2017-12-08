@@ -22,7 +22,7 @@ class area extends auth {
     private function createAreaSql($array) {
         $sql = '(';
         foreach ($array as $item) {
-            $sql .= "`sort_id`={$item['sort_id']} or ";
+            $sql .= "`soft_sort_id`={$item['sort_id']} or ";
         }
         $sql = substr($sql, 0, strlen($sql) - 3);
         $sql .= ')';
@@ -33,10 +33,9 @@ class area extends auth {
         $v = new view();
         $area = $this->getManageArea($_COOKIE['uid']);
         $sql = self::createAreaSql($area);
-        $db = db::table('soft_sort as a')->field('count(distinct sid)')
-            ->join(':soft_list as b', 'a.soft_id=b.sid');
+        $db = db::table('soft_list');
         $db->where($sql);
-        $total =$db->find()['count(distinct sid)'];
+        $total = $db->count();
         $v->assign('total', $total);
         $v->assign('area_manage', $area);
         $v->assign('breadcrumb', '<a href="' . __HOME_ . '">首页</a>/<a href="' . __HOME_ . '/index/area/index">' . $this->title . '</a>');
@@ -70,22 +69,38 @@ class area extends auth {
         return $retSort;
     }
 
-    public function area($at = 'get') {
+    public function oper($at = 'get', $page = 1, $keyword = '') {
         if ($at == 'get') {
             $area = $this->getManageArea($_COOKIE['uid']);
-            foreach ($area as $item) {
-                $sql = api::forSubSort_SQL($item['sort_id']);
-                $db = db::table('soft_sort as a')
-                    ->join(':soft_list as b', 'a.soft_id=b.sid');
-                if ($sql != '') {
-                    $sql = "( `sort_id`={$item['sort_id']} or " . substr($sql, 0, strlen($sql) - 3) . ' )';
-                    $db->where($sql);
-                } else {
-                    $db->where("`sort_id`={$item['sort_id']}");
-                }
-                $db->count();
+            $sql = self::createAreaSql($area);
+            $db = db::table('soft_list as a')
+                ->join(':user as b', 'a.soft_uid=b.uid');
+            $db->where($sql)->where('soft_type', 0);
+            $page =
+            $json = oper::getOper($db,
+                'uid,sid,user,soft_filename as filename,soft_name as name,soft_path as file,soft_logo as image,soft_price as price,soft_name',
+                $page, $keyword);
+            foreach ($json['rows'] as $key => $item) {
+                $json['rows'][$key]['file'] = getFileName($json['rows'][$key]['file']);
             }
-            oper::getOper($db);
+            return $json;
+        } else if ($at == 'pass') {
+            $soft = db::table('soft_list')->where('sid', _get('sid'))->find();
+            $retJson = ['code' => -1];
+            $filePath = 'static/res/' . $soft['soft_path'];
+            if (!is_file($filePath)) {
+                $retJson['msg'] = '文件不存在';
+                return $retJson;
+            }
+            $tmpFile = md5($filePath) . '_' . getFileName($filePath);
+            $newFile = time2path('static/res/soft/', $timePath) . $tmpFile;
+            @rename($filePath, $newFile);
+            db::table('soft_list')->where('sid', _get('sid'))->update(['soft_type' => 1, 'soft_path' => 'soft/' . $timePath . $tmpFile]);
+            return ['code' => 0, 'msg' => '成功'];
+        } else if ($at == 'refuse') {
+            db::table('soft_list')->where('sid', _get('sid'))
+                ->update(['soft_reason' => htmlspecialchars(_get('reason')), 'soft_type' => 2]);
+            return ['code' => 0, 'msg' => '成功'];
         }
     }
 

@@ -24,9 +24,6 @@ return [
     'ctrl_key' => 'c',
     'action_key' => 'a',
     'route' => [
-        '*' => [
-            'debug/{test}' => 'index->debug'
-        ],
         'get' => [
             'd/{sid}' => 'index->api->download',
             'admin'=>'admin->index->index',

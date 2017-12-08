@@ -31,7 +31,7 @@ var dList = function (obj, sid, keydown) {
                     html += timestamp2date(json.rows[key].soft_time) +
                         '            </span>\n' +
                         '                <a class="download" target="_blank" href="' + home + '/d/' + json.rows[key].sid +
-                        '?file=' + json.rows[key].soft_path +
+                        '?file=' + json.rows[key].soft_filename +
                         '">立即下载</a>\n' +
                         '            </div>\n' +
                         '        </div>';

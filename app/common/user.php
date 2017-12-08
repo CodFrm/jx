@@ -28,6 +28,8 @@ class user {
             $detail = '管理员后台积分操作';
         } else if ($type == 1) {
             $detail = '机器人积分兑换';
+        } else if ($type == 3) {
+            $detail = '其他用户下载资源';
         }
         db::table('user')->where('uid', $uid)->update('`integral`=`integral`+' . $number);
         $um = uidUser($uid);
@@ -52,6 +54,7 @@ class user {
                 'ic_detail' => '购买' . $soft['soft_name'] . '花费' . $spend . '积分', 'ic_uid' => $user['uid'],
                 'ic_number' => -$spend,
                 'ic_time' => time(), 'ic_param_id' => $sid, 'ic_over_integral' => $um['integral']]);
+            self::addIntegral($soft['soft_uid'], $soft['soft_price'], $sid, 3);
             return true;
         }
         return '软件不存在';

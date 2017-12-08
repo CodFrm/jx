@@ -102,8 +102,9 @@ class index extends auth {
             set_time_limit(0);
             $tmpFile = getFileName($filePath);
             $newFile = time2path('static/res/soft/', $timePath) . $tmpFile;
-            @copy($filePath, $newFile);
-            @unlink($filePath);
+            @rename($filePath,$newFile);
+//            @copy($filePath, $newFile);
+//            @unlink($filePath);
             $newFile = 'soft/' . $timePath . $tmpFile;
             if (_get('sid')) {
                 db::table('soft_list')->where('sid', _get('sid'))

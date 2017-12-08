@@ -27,7 +27,6 @@
     </div>
 </div>
 
-
 <link rel="stylesheet" href="__HOME__/static/cmltable/cmltable.css">
 <script src="__HOME__/static/cmltable/cmltable.js"></script>
 <script>
@@ -35,7 +34,7 @@
     $(document).ready(function () {
         Table = $('#user').createCMLTable({
             url: "{:url('index/area/oper','at=get')}",
-            keyID: 'uid',
+            keyID: 'sid',
             action: [
                 {
                     action: 'pass',
@@ -51,11 +50,15 @@
             columns: [{
                 checkbox: true
             }, {
-                field: 'uid',
+                field: 'user',
                 title: '上传用户'
             }, {
-                field: 'file',
-                title: '上传文件'
+                field: 'name',
+                title: '上传文件',
+                format: function (name, id) {
+                    var data = Table.findById(id);
+                    return '<a href="{:url()}/d/' + data.sid + '?file=' + data.filename + '">' + name + '</a>';
+                }
             }, {
                 field: 'image',
                 title: '上传图标',
@@ -63,49 +66,42 @@
                     return '<img src="__HOME__/static/res/images/' + avatar + '" width="24px" height="24px" />';
                 }
             }, {
-                field: 'integral',
+                field: 'price',
                 title: '积分'
             }, {
-                field: 'uid',
+                field: 'sid',
                 title: '操作',
-                format: function (uid) {
-                    var ret = '<button class="cml-btn btn-edit" onclick="changePwd(';
-                    ret += uid + ')">改个密码</button>';
-                    ret += '<button class="cml-btn btn-edit" onclick="addIntegral(';
-                    ret += uid + ')">加点积分</button>';
+                format: function (sid) {
+                    var ret = '<button class="cml-btn btn-edit" onclick="pass(';
+                    ret += sid + ')">通过</button>';
+                    ret += '<button class="cml-btn btn-edit" onclick="refuse(';
+                    ret += sid + ')">拒绝</button>';
                     return ret;
                 }
             }
             ]
         });
-        $(document).on('click', '#upload-image', function (event) {
-            $('#image-file').click();
-        });
-        $(document).on('click', '#clear-image', function (event) {
-            $('#qr-image').attr('src', '');
-            $('#qr-image').attr('file', '');
-        })
     });
 
-    function changePwd(uid) {
-        var npwd = prompt('请输入新密码', '');
-        if (npwd != null) {
-            $.ajax({
-                url: "{:url('admin/oper/operUser','at=cp')}",
-                data: {uid: uid, npwd: npwd},
-                success: function (obj) {
-                    alert(obj.msg);
+    function pass(sid) {
+        $.ajax({
+            url: "{:url('index/area/oper','at=pass')}",
+            data: {sid: sid},
+            success: function (obj) {
+                alert(obj.msg);
+                if (obj.code == 0) {
+                    Table.refresh();
                 }
-            })
-        }
+            }
+        })
     }
 
-    function addIntegral(uid) {
-        var n = prompt('请输入数量', '');
-        if (n != null) {
+    function refuse(sid) {
+        var reason = prompt('请输入拒绝理由', '');
+        if (reason != null) {
             $.ajax({
-                url: "{:url('admin/oper/operUser','at=adi')}",
-                data: {uid: uid, n: n},
+                url: "{:url('index/area/oper','at=refuse')}",
+                data: {sid: sid, reason: reason},
                 success: function (obj) {
                     alert(obj.msg);
                     if (obj.code == 0) {
@@ -116,27 +112,5 @@
         }
     }
 
-    function upload() {
-        var pic = $('#image-file')[0].files[0];
-        var formData = new FormData();
-        formData.append('upfile', pic);
-        $.ajax({
-            url: "{:url('admin/index/upload_image')}",//需要链接到服务器地址
-            type: 'post',
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-                alert(data.msg);
-                if (data.code == 0) {
-                    $('#qr-image').attr('src', "__HOME__/static/res/images/" + data.url);
-                    $('#qr-image').attr('file', data.url);
-                }
-            }, error: function () {
-                alert('上传失败！');
-            }
-        });
-    }
 </script>
 {include 'index/footer'}
