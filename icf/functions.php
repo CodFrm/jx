@@ -48,7 +48,10 @@ function _config($key) {
  * @param null $default
  * @return null
  */
-function _get($key, $default = false) {
+function _get($key, $default = false, $html = true) {
+    if ($html) {
+        return htmlspecialchars(_readValue($_GET, $key, $default));
+    }
     return _readValue($_GET, $key, $default);
 }
 
@@ -59,7 +62,10 @@ function _get($key, $default = false) {
  * @param bool $default
  * @return bool
  */
-function _post($key, $default = false) {
+function _post($key, $default = false, $html = true) {
+    if ($html) {
+        return htmlspecialchars(_readValue($_POST, $key, $default));
+    }
     return _readValue($_POST, $key, $default);
 }
 

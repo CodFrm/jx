@@ -213,3 +213,37 @@ function is_res($path, $type = 1) {
     }
     return '文件不存在';
 }
+
+
+/**
+ * 时间转路径并创建目录
+ * @author Farmer
+ * @param $path
+ * @return bool|string
+ */
+function time2path($path = '/', &$timePath = '') {
+    $year = date('Y');
+    $month = date('m');
+    if (!file_exists($path . $year)) {
+        if (!mkdir($path . $year, 0777, true)) return false;
+    }
+    if (!file_exists($path . $year . '/' . $month)) {
+        if (!mkdir($path . $year . '/' . $month, 0777, true)) return false;
+    }
+    $timePath = $year . '/' . $month . '/';
+    return $path . $year . '/' . $month . '/';
+}
+
+
+function getFile($path, $url) {
+    $ch = curl_init();
+    $timeout = 5;
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    $content = curl_exec($ch);
+    curl_close($ch);
+    $fp2 = @fopen($path, 'a');
+    fwrite($fp2, $content);
+    fclose($fp2);
+}
