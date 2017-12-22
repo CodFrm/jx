@@ -18,7 +18,7 @@ class user extends auth {
     public function pwd() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $ret = isExist($_POST, [
-                'user' => ['func' => ['\app\common\user::isUser','user'], 'regex' => ['/^[\x{4e00}-\x{9fa5}\w\@\.]{2,}$/u', '用户名不符合规则'], 'msg' => '请输入用户名', 'sql' => 'user'],
+                'user' => ['func' => ['\app\common\user::isUser', 'user'], 'regex' => ['/^[\x{4e00}-\x{9fa5}\w\@\.]{2,}$/u', '用户名不符合规则'], 'msg' => '请输入用户名', 'sql' => 'user'],
                 'pwd' => ['regex' => ['/^[\\~!@#$%^&*()-_=+|{}\[\], .?\/:;\'\"\d\w]{6,16}$/', '密码不符合规范'], 'msg' => '请输入密码'],
                 'npwd' => ['regex' => ['/^[\\~!@#$%^&*()-_=+|{}\[\], .?\/:;\'\"\d\w]{6,16}$/', '密码不符合规范'], 'msg' => '请输入新密码', 'sql' => 'pwd'],
             ], $data);
@@ -28,7 +28,7 @@ class user extends auth {
                 }
                 $data['pwd'] = \app\common\user::encodePwd($this->userMsg['uid'], $data['pwd']);
                 db::table('user')->where('uid', $this->userMsg['uid'])->update($data);
-                db::table('token')->where('token',$_COOKIE['token'])->delete();
+                db::table('token')->where('token', $_COOKIE['token'])->delete();
                 return ['code' => 0, 'msg' => '修改成功,请重新登陆'];
             }
             return ['code' => -1, 'msg' => $ret];
@@ -38,4 +38,12 @@ class user extends auth {
         }
     }
 
+    public function remove_upload($sid) {
+        if ($rows = db::table('soft_list')->where('sid', $sid)->where('soft_uid', $_COOKIE['uid'])->find()) {
+            db::table('soft_list')->where('sid', $sid)->where('soft_uid', $_COOKIE['uid'])->update(['soft_type' => 5]);
+            return json(['code' => 0, 'msg' => '删除成功']);
+        } else {
+            return json(['code' => -1, 'msg' => '未找到记录']);
+        }
+    }
 }

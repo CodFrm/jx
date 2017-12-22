@@ -91,15 +91,15 @@ function _readValue($data, $key, $default = false) {
  * Json 编码 对于中文处理 仅支持php5.4以后的版本
  *
  * @author Farmer
- * @param string $str
+ * @param array $arr
  * @return string
  */
-function json($str) {
+function json($arr) {
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
     header("Cache-Control: no-cache, must-revalidate");
     header("Pragma: no-cache");
     header('Content-Type: application/json; charset=utf-8');
-    return json_encode($str, JSON_UNESCAPED_UNICODE);
+    return json_encode($arr, JSON_UNESCAPED_UNICODE);
 }
 
 

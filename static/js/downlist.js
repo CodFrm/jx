@@ -139,7 +139,7 @@ function bind(father, attr, func, select) {
 function timestamp2date(time) {
     var t = new Date(time * 1000);
     var commonTime = t.toLocaleString();
-    var ret = t.getFullYear() + '/' + (t.getMonth() + 1) + '/' + t.getDay() +
+    var ret = t.getFullYear() + '/' + (t.getMonth() + 1) + '/' + t.getDate() +
         ' ' + zero(t.getHours()) + ':' + zero(t.getMinutes()) + ':' + zero(t.getSeconds());
     return ret;
 }

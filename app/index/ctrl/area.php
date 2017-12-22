@@ -92,7 +92,7 @@ class area extends auth {
                 $retJson['msg'] = '文件不存在';
                 return $retJson;
             }
-            $tmpFile = md5($filePath) . '_' . getFileName($filePath);
+            $tmpFile = md5($filePath) . '_' . $soft['soft_filename'];
             $newFile = time2path('static/res/soft/', $timePath) . $tmpFile;
             @rename($filePath, $newFile);
             db::table('soft_list')->where('sid', _get('sid'))->update(['soft_type' => 1, 'soft_path' => 'soft/' . $timePath . $tmpFile]);

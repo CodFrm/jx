@@ -102,10 +102,38 @@ class api extends auth {
         return _404();
     }
 
-    public static function applyUpload() {
+    public function applyUpload() {
+        $sort_id = 0;
+        $price = 0;
+        $retJson = self::vUpload($sort_id, $price);
+        if ($retJson['code'] != 0) {
+            return $retJson;
+        }
+        db::table('soft_list')->insert([
+            'soft_name' => _post('name'),
+            'soft_filename' => _post('filename'),
+            'soft_exp' => _post('exp'),
+            'soft_logo' => _post('logo'),
+            'soft_path' => '',
+            'soft_price' => $price,
+            'soft_sort_id' => $sort_id,
+            'soft_type' => 3,
+            'soft_time' => time(),
+            'soft_uid' => $_COOKIE['uid'],
+        ]);
+        $retJson = ['code' => 0, 'msg' => 'success', 'id' => db::table()->lastinsertid()];
+        return $retJson;
+    }
+    public function isUpload(){
+        return self::vUpload();
+    }
+    private function vUpload(&$sort_id = 0, &$price = 0) {
         $retJson = ['code' => -1];
-        if (db::table('soft_list')->where('soft_uid', $_COOKIE['uid'])->where('soft_type', 3)->find()) {
+        if ($old_row = db::table('soft_list')->where('soft_uid', $_COOKIE['uid'])->where('soft_type', 3)->find()) {
             $retJson['msg'] = '您有未上传完毕的任务(暂时未提供恢复,请直接找管理,下次更新╮(￣⊿￣)╭)';
+            $retJson['sid'] = $old_row['sid'];
+            $retJson['code'] = -2;
+            $retJson['row'] = ['name' => $old_row['soft_name'], 'exp' => $old_row['soft_exp'], 'logo' => $old_row['soft_logo'], 'price' => $old_row['soft_price']];
             return $retJson;
         }
         if (!_post('name')) {
@@ -131,20 +159,7 @@ class api extends auth {
             $retJson['msg'] = '图片不存在';
             return $retJson;
         }
-
-        db::table('soft_list')->insert([
-            'soft_name' => _post('name'),
-            'soft_filename' => _post('filename'),
-            'soft_exp' => _post('exp'),
-            'soft_logo' => _post('logo'),
-            'soft_path' => '',
-            'soft_price' => $price,
-            'soft_sort_id' => $sort_id,
-            'soft_type' => 3,
-            'soft_time' => time(),
-            'soft_uid' => $_COOKIE['uid'],
-        ]);
-        $retJson = ['code' => 0, 'msg' => 'success', 'id' => db::table()->lastinsertid()];
+        $retJson = ['code' => 0, 'msg' => 'success'];
         return $retJson;
     }
 
