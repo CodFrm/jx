@@ -45,7 +45,7 @@ class api extends auth {
             $db = db::table('soft_list');
         }
         $db->where('soft_type', 1)
-            ->field(['sid', 'soft_name', 'soft_exp', 'soft_logo', 'soft_filename', 'soft_time'])
+            ->field(['sid','soft_price'=>'price', 'soft_name', 'soft_exp', 'soft_logo', 'soft_filename', 'soft_time'])
             ->limit(($page - 1) * 10, 10)->order('sid');
         if (!empty($keydown)) {
             $db->where('soft_name', "%{$keydown}%", 'like')->_or();

@@ -17,9 +17,9 @@ use icf\lib\view;
 
 class index extends auth {
 
-    public function index($sort_id=0,$keydown='') {
+    public function index($sort_id = 0, $keydown = '') {
         $v = new view();
-        $v->assign('breadcrumb',outBreadcrumbHtml($sort_id));
+        $v->assign('breadcrumb', outBreadcrumbHtml($sort_id));
         $v->assign('sort_id', $sort_id);
         $v->assign('keydown', $keydown);
         $v->assign('user', $this->userMsg);
@@ -50,6 +50,11 @@ class index extends auth {
             $json['msg'] = $ret;
         }
         return json($json);
+    }
+
+    public function play($sort_id) {
+        view()->assign('url',__HOME_.'/d/'.$sort_id);
+        view()->display();
     }
 
     public function sign_out() {

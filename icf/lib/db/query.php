@@ -313,7 +313,7 @@ class query {
             }
         } else if (is_array($field)) {
             foreach ($field as $key => $value) {
-                if (is_array($value)) {
+                if (is_string($key)) {
                     $this->field .= (empty($this->field) ? '' : ',') . $key . ' as ' . $value . ' ';
                 } else if (is_string($value)) {
                     $this->field .= (empty($this->field) ? '' : ',') . $value . ' ';

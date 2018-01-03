@@ -27,7 +27,8 @@ return [
         'get' => [
             'd/{sid}' => 'index->api->download',
             'admin'=>'admin->index->index',
-            'sort/{sort_id}'=>'index->index->index'
+            'sort/{sort_id}'=>'index->index->index',
+            'play/{sort_id}'=>'index->index->play'
         ]
     ],
     'tpl_suffix' => 'html',

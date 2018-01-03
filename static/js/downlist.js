@@ -1,6 +1,30 @@
 /**
  js,动态加载软件列表
  */
+
+var vf = ['rmvb', 'mp4'];
+
+function getFormat(name) {
+    return name.substring(name.lastIndexOf('.') + 1);
+    ;
+}
+
+function contains(arr, obj) {
+    var i = arr.length;
+    while (i--) {
+        if (arr[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function isVideoFile(name) {
+    var format = getFormat(name);
+    console.log(format);
+    return contains(vf, format);
+}
+
 var dList = function (obj, sid, keydown) {
     obj.className += 'soft-list';//加一个class样式
     obj.page = 1;//记录现在的页码
@@ -31,8 +55,11 @@ var dList = function (obj, sid, keydown) {
                     html += timestamp2date(json.rows[key].soft_time) +
                         '            </span>\n' +
                         '                <a class="download" target="_blank" href="' + home + '/d/' + json.rows[key].sid +
-                        '?file=' + json.rows[key].soft_filename +
-                        '">立即下载</a>\n' +
+                        '?file=' + json.rows[key].soft_filename + '">立即下载</a>';
+                    if (isVideoFile(json.rows[key].soft_filename)) {
+                        html += '<a class="download" target="_blank" href="' + home + '/play/' + json.rows[key].sid + '">在线播放</a>';
+                    }
+                    html += '购买积分:' + json.rows[key].price + '\n' +
                         '            </div>\n' +
                         '        </div>';
                     obj.innerHTML += html;
