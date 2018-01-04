@@ -2,7 +2,7 @@
  js,动态加载软件列表
  */
 
-var vf = ['rmvb', 'mp4'];
+var vf = ['mp4'];
 
 function getFormat(name) {
     return name.substring(name.lastIndexOf('.') + 1);
